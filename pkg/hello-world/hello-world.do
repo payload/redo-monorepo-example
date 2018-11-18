@@ -1,3 +1,13 @@
-redo-ifchange out/hello-world.o
+. $config
 
-cc -o $3 out/hello-world.o -lmyprint
+redo-ifchange pkg/libmyprint/libmyprint
+
+
+
+# redo-ifchange src/hello-world.o
+
+# $(pkg-config --libs $OUT/libmyprint.pc)
+#cc -o $3 src/hello-world.o $LINK
+
+
+helper
