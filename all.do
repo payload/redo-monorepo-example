@@ -1,4 +1,15 @@
-export ROOT=$PWD
-export config=$PWD/config.sh
+exec >&2
 
-redo pkg/hello-world/hello-world
+#export ROOT=$PWD
+#export config=$PWD/config.sh
+
+#redo pkg/hello-world/hello-world
+
+pkgs=
+for pkg in pkg/*; do
+    pkgname="${pkg#pkg/}"
+    pkgs="$pkgs $OUT/$pkg/$pkgname"
+done
+
+pkgs=pkg/exam*
+echo $pkgs | xargs redo-ifchange

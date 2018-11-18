@@ -1,5 +1,9 @@
 exec >&2
 
+echo $1 $3 $OUT
+
+exit 77
+
 src="src/${2#lib/}.c"
 
 redo-ifchange lib "$src"
