@@ -1,0 +1,2 @@
+SRCDIR=..
+. "$SRCDIR/delegate.od"
