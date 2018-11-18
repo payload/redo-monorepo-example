@@ -1,6 +1,6 @@
 . $config
 
-redo-ifchange pkg/libmyprint/libmyprint
+redo-ifchange $ROOT/pkg/libmyprint/libmyprint.so
 
 
 

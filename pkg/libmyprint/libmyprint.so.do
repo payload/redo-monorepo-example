@@ -1,4 +1,4 @@
-DEPS=src/myprint.o
+DEPS=lib/myprint.o
 
 redo-ifchange $DEPS
 
