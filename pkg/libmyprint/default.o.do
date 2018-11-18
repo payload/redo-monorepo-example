@@ -1,12 +1,15 @@
 exec >&2
 
-echo $1 $3 $OUT
+# directory
 
-exit 77
+dir=$(dirname $(realpath --relative-to="$ROOT" "$PWD/$2"))
+[ -d "$OUT/$dir" ] || mkdir -p "$OUT/$dir"
 
-src="src/${2#lib/}.c"
+# compile
 
-redo-ifchange lib "$src"
+src="$2.c"
+
+redo-ifchange "$src"
 
 cc -o "$3" -c "$src" \
     -Iinc \

@@ -1,5 +1,3 @@
-exec >&2
-
 # directory
 
 dir=$(dirname $(realpath --relative-to="$ROOT" "$PWD/$2"))
@@ -7,8 +5,4 @@ dir=$(dirname $(realpath --relative-to="$ROOT" "$PWD/$2"))
 
 #
 
-objs=$OUT/$dir/src/myprint.o
-
-redo-ifchange $objs
-
-cc -o $3 --shared $objs
+redo-ifchange $OUT/$dir/libmyprint.so
