@@ -7,8 +7,7 @@ exec >&2
 
 pkgs=
 for pkg in pkg/exam*; do
-    pkgname="${pkg#pkg/}"
-    pkgs="$pkgs $OUT/$pkg/$pkgname"
+    pkgs="$pkgs $OUT/$pkg/build"
 done
 
 echo $pkgs | xargs redo-ifchange
