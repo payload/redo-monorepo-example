@@ -3,10 +3,11 @@
 #
 # Our job is then to delegate the work the right .do file inside $SRCDIR,
 # if any.
-OUT=$PWD
+export OUT=$PWD
 ofile=$PWD/$3
 x1=$1
 cd "$SRCDIR"
+export ROOT=$PWD
 redo-whichdo "$x1" | {
     ifcreate=
     while read dopath; do
