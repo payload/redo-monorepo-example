@@ -16,4 +16,6 @@ export cppflags
 
 redo-ifchange $objs $OUT/pkg/libmyprint/libmyprint.so
 
-cc -o $3 $objs $cppflags -L$OUT/pkg/libmyprint -lmyprint
+cc -o $3 $objs $cppflags \
+    -Wl,-rpath,'$ORIGIN/../libmyprint' \
+    -L$OUT/pkg/libmyprint -l:libmyprint.so
