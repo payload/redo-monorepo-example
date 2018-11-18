@@ -1,0 +1,33 @@
+die() {
+    echo "$@"
+    exit 1
+}
+
+check_globals() {
+    test -n "$ROOT" || die "check_globals: need ROOT"
+    test -n "$SRCDIR" || die "check_globals: need SCRDIR"
+    test -n "$OUT" || die "check_globals: need OUT"
+}
+
+path_to_root() {
+    realpath --relative-to="$PWD" "$ROOT"
+}
+
+path_from_root() {
+    realpath --relative-to="$ROOT" "$PWD"
+}
+
+create_build_dir() {
+    [ -d "$BUILD_DIR" ] || mkdir -p "$BUILD_DIR"
+}
+
+substitute() {
+    echo "$1" | sed "s#$2#$3#g"
+}
+
+redo-ifchange $prelude
+check_globals
+PATH_TO_ROOT=$(path_to_root)
+PATH_FROM_ROOT=$(path_from_root)
+BUILD_DIR="$OUT/$PATH_FROM_ROOT"
+create_build_dir

@@ -1,11 +1,6 @@
-# directory
-
-dir=$(dirname $(realpath --relative-to="$ROOT" "$PWD/$2"))
-[ -d "$OUT/$dir" ] || mkdir -p "$OUT/$dir"
-
-#
+. $prelude
 
 for target in libmyprint.so libmyprint.so.conf; do
-    echo "$OUT/$dir/$target"
+    echo "$BUILD_DIR/$target"
 done \
 | xargs redo-ifchange

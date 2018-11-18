@@ -9,6 +9,7 @@ x1=$1
 cd "$SRCDIR"
 export SRCDIR
 export ROOT=$PWD
+export prelude=$ROOT/prelude.od
 redo-whichdo "$x1" | {
     ifcreate=
     while read dopath; do

@@ -1,14 +1,5 @@
 exec >&2
-
-# directory
-
-dir=$(dirname $(realpath --relative-to="$ROOT" "$PWD/$2"))
-[ -d "$OUT/$dir" ] || mkdir -p "$OUT/$dir"
-to_root=$(realpath --relative-to="$PWD" "$ROOT")
-
-# compile
-
-cppflags=$(echo "$cppflags" | sed "s#\$prefix#$to_root#g")
+. $prelude
 
 src="$2.c"
 

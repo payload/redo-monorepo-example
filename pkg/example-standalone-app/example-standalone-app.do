@@ -1,13 +1,7 @@
 exec >&2
+. $prelude
 
-# directory
-
-dir=$(dirname $(realpath --relative-to="$ROOT" "$PWD/$2"))
-[ -d "$OUT/$dir" ] || mkdir -p "$OUT/$dir"
-
-#
-
-objs=$OUT/$dir/src/main.o
+objs=$BUILD_DIR/src/main.o
 
 redo-ifchange $objs
 

@@ -1,10 +1,5 @@
-# directory
-
-dir=$(dirname $(realpath --relative-to="$ROOT" "$PWD/$2"))
-[ -d "$OUT/$dir" ] || mkdir -p "$OUT/$dir"
-
-#
+. $prelude
 
 cat <<-EOF
-cppflags='-I\$prefix/$dir/inc'
+cppflags='-iwithprefix $PATH_FROM_ROOT/inc'
 EOF
