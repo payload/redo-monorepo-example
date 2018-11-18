@@ -5,7 +5,4 @@ dir=$(dirname $(realpath --relative-to="$ROOT" "$PWD/$2"))
 
 #
 
-for target in libmyprint.so libmyprint.so.conf; do
-    echo "$OUT/$dir/$target"
-done \
-| xargs redo-ifchange
+redo-ifchange $OUT/$dir/hello-world

@@ -1,13 +1,19 @@
-. $config
+exec >&2
 
-redo-ifchange $ROOT/pkg/libmyprint/libmyprint.so
+# directory
 
+dir=$(dirname $(realpath --relative-to="$ROOT" "$PWD/$2"))
+[ -d "$OUT/$dir" ] || mkdir -p "$OUT/$dir"
 
+#
 
-# redo-ifchange src/hello-world.o
+objs=$OUT/$dir/src/hello-world.o
 
-# $(pkg-config --libs $OUT/libmyprint.pc)
-#cc -o $3 src/hello-world.o $LINK
+redo-ifchange $OUT/pkg/libmyprint/libmyprint.so.conf
 
+. $OUT/pkg/libmyprint/libmyprint.so.conf
+export cppflags
 
-helper
+redo-ifchange $objs $OUT/pkg/libmyprint/libmyprint.so
+
+cc -o $3 $objs $cppflags -L$OUT/pkg/libmyprint -lmyprint
