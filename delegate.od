@@ -4,24 +4,25 @@
 # Our job is then to delegate the work the right .do file inside $SRCDIR,
 # if any.
 export OUT=$PWD
+x1=$1
+ofile=$PWD/$3
 cd "$SRCDIR"
 export SRCDIR
 export ROOT=$PWD
 export prelude=$ROOT/prelude.od
 . "$prelude"
-x1=$1
-ofile=$PWD/$3
 redo-whichdo "$x1" | {
     ifcreate=
     while read dopath; do
+        dofile=${dopath##*/}
+        dodir=${dopath%$dofile}
+        dodopath=${dodir}do/$dofile
+        
         if [ ! -e "$dopath" ]; then
             ifcreate="$ifcreate $dopath"
         else
             redo-ifcreate $ifcreate
             redo-ifchange "$dopath"
-
-            dofile=${dopath##*/}
-            dodir=${dopath%$dofile}
 
             x1_rel=${x1#$dodir}
 
@@ -33,6 +34,25 @@ redo-whichdo "$x1" | {
 
             set -- "$x1_rel" "$x2_rel" "$ofile"
             . "./$dofile"
+            exit
+        fi
+
+        if [ ! -e "$dodopath" ]; then
+            ifcreate="$ifcreate $dodopath"
+        else
+            redo-ifcreate $ifcreate
+            redo-ifchange "$dodopath"
+
+            x1_rel=${x1#$dodir}
+
+            ext="$(get_do_ext "$dofile")"
+            x2_rel=${x1#$dodir}
+            x2_rel=${x2_rel%$ext}
+
+            cd "$dodir"
+
+            set -- "$x1_rel" "$x2_rel" "$ofile"
+            . "./do/$dofile"
             exit
         fi
     done
