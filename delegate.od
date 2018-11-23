@@ -4,13 +4,13 @@
 # Our job is then to delegate the work the right .do file inside $SRCDIR,
 # if any.
 export OUT=$PWD
-ofile=$PWD/$3
-x1=$1
 cd "$SRCDIR"
 export SRCDIR
 export ROOT=$PWD
 export prelude=$ROOT/prelude.od
 . "$prelude"
+x1=$1
+ofile=$PWD/$3
 redo-whichdo "$x1" | {
     ifcreate=
     while read dopath; do
