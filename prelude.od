@@ -21,6 +21,15 @@ mydirname() {
     echo "${1%${1##*/}}"
 }
 
+get_do_ext() {
+    ext=${1##*default}
+    if [ "$ext" != "$1" ]; then
+        echo ${ext%.do}
+    else
+        echo ''
+    fi
+}
+
 abspath=`mydirname "$PWD/$2"`
 
 redo-ifchange $prelude
