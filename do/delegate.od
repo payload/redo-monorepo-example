@@ -11,8 +11,10 @@ ofile=$PWD/$3
 cd "$SRCDIR"
 export SRCDIR
 export ROOT=$PWD
-export prelude=$ROOT/prelude.od
-. "$prelude"
+
+redo-ifchange do/delegate.od
+redo-ifchange do/prelude.od
+. do/prelude.od
 
 delegate_to_dofile() {
     dopath="$1"
@@ -55,7 +57,6 @@ process_do_paths() {
 }
 
 abspath=`mydirname "$PWD/$2"`
-redo-ifchange $prelude
 check_globals
 PATH_TO_ROOT=$(realpath --relative-to="$abspath" "$ROOT")
 PATH_FROM_ROOT=$(realpath --relative-to="$ROOT" "$abspath")

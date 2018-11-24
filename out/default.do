@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 SRCDIR=..
-. "$SRCDIR/delegate.od"
+. "$SRCDIR/do/delegate.od"
