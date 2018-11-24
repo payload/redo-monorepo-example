@@ -18,7 +18,8 @@ substitute() {
 }
 
 mydirname() {
-    echo "${1%${1##*/}}"
+    dir="${1%${1##*/}}"
+    echo "${dir%/}"
 }
 
 get_do_ext() {
@@ -28,6 +29,41 @@ get_do_ext() {
     else
         echo ''
     fi
+}
+
+get_do_exts() {
+    cur=${1##*/}
+    while true; do
+        ext=${cur#*.}
+        test $cur = $ext && break
+        echo $ext.do
+        cur=$ext
+    done
+    echo do
+}
+
+path_join() {
+    test -n "$1" && echo "$1/$2" || echo "$2"
+}
+
+get_do_paths() {
+    exts=`get_do_exts $1`
+    p=$1
+    name=${p##*/}
+    dir=$(mydirname $p)
+    path_join "${dir}" $name.do
+    path_join "${dir}" do/$name.do
+
+    while true; do
+        for ext in $exts; do
+            path_join "${dir}" default.$ext
+            path_join "${dir}" do/default.$ext
+        done
+        
+        p=$dir
+        dir=$(mydirname $p)
+        test "${p}" = "${dir}" && return
+    done
 }
 
 abspath=`mydirname "$PWD/$2"`

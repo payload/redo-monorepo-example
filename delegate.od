@@ -5,56 +5,59 @@
 # if any.
 export OUT=$PWD
 x1=$1
+x2=$2
+x3=$PWD/$3
 ofile=$PWD/$3
 cd "$SRCDIR"
 export SRCDIR
 export ROOT=$PWD
 export prelude=$ROOT/prelude.od
 . "$prelude"
-redo-whichdo "$x1" | {
-    ifcreate=
+
+delegate_to_dofile() {
+    dopath="$1"
+    dofile=${dopath##*/}
+    dodir=${dopath%$dofile}
+    dodir=${dodir%/}
+    
+    if is_do_dir "$dodir"; then
+        wd="${dodir%${dodir##*/}}"
+    else
+        wd="$dodir"
+    fi
+
+    test -n "$wd" && cd "$wd"
+
+    x1_rel=${x1#$wd}
+    ext="$(get_do_ext "$dofile")"
+    x2_rel=${x1#$wd}
+    x2_rel=${x2_rel%$ext}
+    dodir_rel=${dodir#$wd}/
+    dodir_rel=${dodir_rel#/}
+
+    set -- "$x1_rel" "$x2_rel" "$ofile"
+    . "${dodir_rel}$dofile"
+}
+
+is_do_dir() {
+    path=${1%/}
+    test "${path##*/}" = "do"
+    return
+}
+
+process_do_paths() {
+    dopath=$1
     while read dopath; do
-        dofile=${dopath##*/}
-        dodir=${dopath%$dofile}
-        dodopath=${dodir}do/$dofile
-        
+        ifcreate=
         if [ ! -e "$dopath" ]; then
             ifcreate="$ifcreate $dopath"
         else
             redo-ifcreate $ifcreate
             redo-ifchange "$dopath"
-
-            x1_rel=${x1#$dodir}
-
-            ext="$(get_do_ext "$dofile")"
-            x2_rel=${x1#$dodir}
-            x2_rel=${x2_rel%$ext}
-
-            cd "$dodir"
-
-            set -- "$x1_rel" "$x2_rel" "$ofile"
-            . "./$dofile"
-            exit
-        fi
-
-        if [ ! -e "$dodopath" ]; then
-            ifcreate="$ifcreate $dodopath"
-        else
-            redo-ifcreate $ifcreate
-            redo-ifchange "$dodopath"
-
-            x1_rel=${x1#$dodir}
-
-            ext="$(get_do_ext "$dofile")"
-            x2_rel=${x1#$dodir}
-            x2_rel=${x2_rel%$ext}
-
-            cd "$dodir"
-
-            set -- "$x1_rel" "$x2_rel" "$ofile"
-            . "./do/$dofile"
-            exit
+            delegate_to_dofile "$dopath"
+            return
         fi
     done
-    exit 3
 }
+
+get_do_paths "$x1" | process_do_paths

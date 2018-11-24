@@ -6,7 +6,7 @@ exec >&2
 #redo pkg/hello-world/hello-world
 
 pkgs=
-for pkg in pkg/*; do
+for pkg in `echo pkg/*`; do
     pkgs="$pkgs $OUT/$pkg/build"
 done
 
