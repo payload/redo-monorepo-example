@@ -1,6 +1,3 @@
-exec >&2
-. $prelude
-
 objs=$BUILD_DIR/src/myprint.o
 
 redo-ifchange $objs

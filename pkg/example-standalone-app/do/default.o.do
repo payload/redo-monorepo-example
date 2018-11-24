@@ -1,6 +1,3 @@
-exec >&2
-. $prelude
-
 src="$2.c"
 
 redo-ifchange "$src"

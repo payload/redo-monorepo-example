@@ -1,6 +1,3 @@
-exec >&2
-. $prelude
-
 objs=$BUILD_DIR/src/hello-world.o
 
 redo-ifchange $OUT/pkg/libmyprint/libmyprint.so.conf

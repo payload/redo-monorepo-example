@@ -39,12 +39,6 @@ delegate_to_dofile() {
     . "${dodir_rel}$dofile"
 }
 
-is_do_dir() {
-    path=${1%/}
-    test "${path##*/}" = "do"
-    return
-}
-
 process_do_paths() {
     dopath=$1
     while read dopath; do
@@ -60,4 +54,11 @@ process_do_paths() {
     done
 }
 
+abspath=`mydirname "$PWD/$2"`
+redo-ifchange $prelude
+check_globals
+PATH_TO_ROOT=$(realpath --relative-to="$abspath" "$ROOT")
+PATH_FROM_ROOT=$(realpath --relative-to="$ROOT" "$abspath")
+BUILD_DIR="$OUT/$PATH_FROM_ROOT"
+create_build_dir
 get_do_paths "$x1" | process_do_paths
