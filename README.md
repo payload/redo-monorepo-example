@@ -13,6 +13,14 @@ cd out
 redo -j8
 ```
 
+Run all of the resulting executables.
+
+```
+cd out
+find . -executable -type f -! -name '*.*' -print -exec '{}' ';'
+```
+
+
 ## How does it work?
 
 ### The `out` directory
@@ -33,3 +41,5 @@ The original implementation is taken from
 The `do/delegate.od` script generates a list of search paths based on `$1`.
 It differs from `redo-whichdo` in the way that it also looks into subdirectories named `do`.
 The `.do` files in the subdirectory have lower priority than `.do` files in the current directory.
+
+Note that the implementation currently relies on bashisms.
