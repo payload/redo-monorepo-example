@@ -1,3 +1,5 @@
+redo-ifchange $BUILD_DIR/../libmyprint.so.target
+
 src="$2.c"
 
 redo-ifchange "$src"

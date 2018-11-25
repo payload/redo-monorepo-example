@@ -1,12 +1,18 @@
-src="$2.c"
+load-target() {
+    target=$BUILD_DIR/../$1.target
+    redo-ifchange $target
+    . $target
+}
 
-redo-ifchange "$src"
+compile() {
+    cc -o "$3" -c "$2.c" \
+        $target_cppflags \
+        -MMD -MF "$3.d"
 
-cc -o "$3" -c "$src" \
-    $cppflags \
-    -MMD -MF "$3.d"
+    read DEPS <"$3.d"
+    redo-ifchange ${DEPS#*:}
+    rm -f "$3.d"
+}
 
-read DEPS <"$3.d"
-redo-ifchange ${DEPS#*:}
-
-rm -f "$3.d"
+load-target hello-world
+compile $@
